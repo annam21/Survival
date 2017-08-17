@@ -13,21 +13,20 @@
   theta <- 42 # camera viewshed in degrees
   a <- pi * r^2 * theta/360 # Area of a single camera in square meters
   P <- A/a # Number of possible cameras (grid cells) in study area
-  ncam <- 100
-  nocc <- 100
+  ncam <- 1000
+  nocc <- 1000
   
-  # Basics. 
-  # If cow survival = 1, we only need to estimate the juvenile population size. 
-  njuv1 <- 100
+  # Estimate juvenile population size. 
+  nper <- 3 # Number of periods to estimate survival in
+  njuv <- c(100, rep(NA, nper-1) )
   sjuv <- .8
-  njuv2 <- njuv1 * sjuv
-  njuv3 <- njuv2 * sjuv
-  njuv <- c(njuv1, njuv2, njuv3)
-  
+  for(i in 2:nper){
+    njuv[i] <- njuv[i - 1] * sjuv
+  }
   lambda <- njuv/P
   
   # Estimate population size for juveniles, using STE
-  estN <- rep(NA, length(njuv))
+  estN <- rep(NA, length(njuv) )
   surv <- rep(NA, length(njuv) )
   
   for(i in 1:length(njuv)) {
@@ -56,7 +55,12 @@
       surv[i] <- estN[i]/estN[i-1]
     }
   }
-
+  
+  njuv
+  estN
+  
+  sjuv
+  surv
   # Next...
   # How to propagate uncertainty? 
   # Make it so estN always has to decrease? 
