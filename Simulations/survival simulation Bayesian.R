@@ -79,7 +79,11 @@
   
   njuv
   res$BUGSoutput$mean$N
+  c(quantile(res$BUGSoutput$sims.list$N[, 1], probs = c(.025, .975) ),
+    quantile(res$BUGSoutput$sims.list$N[, 2], probs = c(.025, .975) ),
+    quantile(res$BUGSoutput$sims.list$N[, 3], probs = c(.025, .975) ) )
   
   sjuv
   res$BUGSoutput$mean$S
+  quantile(res$BUGSoutput$sims.list$S, probs = c(.025, .975) )
   
